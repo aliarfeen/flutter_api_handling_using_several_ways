@@ -1,10 +1,11 @@
-import 'package:api_handling/core/data/models/todo_item.dart';
+import 'package:api_handling/core/data/models/todo_item_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
 class ApiService {
-  final String _baseUrl = 'https://jsonplaceholder.typicode.com/todos';
+  final String _baseUrl =
+      'https://680d2ba3c47cb8074d8fc319.mockapi.io/todo/task';
 
   // Improved error handling function
   void _handleResponseError(http.Response response) {
@@ -30,6 +31,14 @@ class ApiService {
 
     final Map<String, dynamic> body = jsonDecode(response.body);
     return Todo.fromJson(body);
+  }
+
+  Future<List<Todo>> getlenght() async {
+    final response = await http.get(Uri.parse(_baseUrl));
+    _handleResponseError(response);
+
+    final List<dynamic> body = jsonDecode(response.body);
+    return body.map((json) => Todo.fromJson(json)).toList();
   }
 
   // POST a new todo
@@ -61,6 +70,8 @@ class ApiService {
   // DELETE a todo
   Future<void> deleteTodo(int id) async {
     final response = await http.delete(Uri.parse('$_baseUrl/$id'));
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
     _handleResponseError(response);
   }
 }

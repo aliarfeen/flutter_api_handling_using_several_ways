@@ -1,7 +1,10 @@
+import 'package:api_handling/core/data/models/todo_item_model.dart';
 import 'package:flutter/material.dart';
 
 class TodoItem extends StatelessWidget {
-  const TodoItem({super.key});
+  final Todo todo;
+  final VoidCallback onDelete;
+  TodoItem({super.key, required this.todo, required this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +26,11 @@ class TodoItem extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text('Todo Item'),
+          Text(todo.title),
           IconButton(
             icon: const Icon(Icons.delete),
-            onPressed: () {
-              // Handle delete action
-            },
-          ),
+            onPressed: onDelete,
+          )
         ],
       ),
     );
